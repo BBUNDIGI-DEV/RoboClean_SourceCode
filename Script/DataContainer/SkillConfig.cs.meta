@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 5af2058aaa70d5e4dbb0ec5eda0c6545
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - AimAisstanceConfig: {fileID: 11400000, guid: 202f419cff4691443a236087fbc9f618,
+      type: 2}
+  - HitEffect: {instanceID: 0}
+  - ATTACK_MOTION: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
