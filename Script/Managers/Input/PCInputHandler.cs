@@ -176,44 +176,31 @@ namespace RoboClean.Input
                 return;
             }
 
-            bool isNoisyEvent = true;
-            foreach (var control in eventPtr.EnumerateChangedControls())
-            {
-                if (control.device is not Gamepad)
-                {
-                    isNoisyEvent = false;
-                    break;
-                }
-
-                if (control.shortDisplayName == null)
-                {
-                    isNoisyEvent = false;
-                    return;
-                }
-
-                if (!control.shortDisplayName.Contains("LS") && !control.shortDisplayName.Contains("RS"))
-                {
-                    isNoisyEvent = false;
-                    break;
-                }
-
-                float stickDelta = (float)control.ReadValueFromEventAsObject(eventPtr);
-                if (stickDelta > 0.05f)
-                {
-                    isNoisyEvent = false;
-                    break;
-                }
-            }
-
-            if (isNoisyEvent)
-            {
-                return;
-            }
-
             eInputDeviceType deviceType = default;
 
             if (device is Gamepad)
             {
+                bool isNoisyEvent = false;
+                bool hasAnyChange = false;
+                foreach (InputControl control in eventPtr.EnumerateChangedControls())
+                {
+                    hasAnyChange = true;
+                    if (control.shortDisplayName.Contains("LS") || control.shortDisplayName.Contains("RS"))
+                    {
+                        float stickDelta = (float)control.ReadValueFromEventAsObject(eventPtr);
+                        if (stickDelta < 0.05f)
+                        {
+                            isNoisyEvent = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (isNoisyEvent || !hasAnyChange)
+                {
+                    return;
+                }
+
                 deviceType = eInputDeviceType.GamePad;
             }
             if (device is Keyboard || device is Mouse)
@@ -221,10 +208,10 @@ namespace RoboClean.Input
                 deviceType = eInputDeviceType.KeyboardAndMouse;
             }
 
+
             if (CurrentInputDevice != deviceType)
             {
                 CurrentInputDevice.Value = deviceType;
-                Debug.Log($"Received event for {device}");
             }
         }
     }
