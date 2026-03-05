@@ -8,12 +8,10 @@ namespace RoboClean.Character.Player
     public static class AimHelper
     {
         private static List<Transform> mEnemyTransList;
-        private static List<Vector3> mNearlestPlayerToEnemey;
 
         static AimHelper()
         {
             mEnemyTransList = new List<Transform>(32);
-            mNearlestPlayerToEnemey = new List<Vector3>(32);
         }
 
         public static void AddEnemeyTrans(Transform trans)
